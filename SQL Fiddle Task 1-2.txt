@@ -1,0 +1,110 @@
+--http://sqlfiddle.com/#!18/5e829e/12
+--1)Task 1:
+--tables have been created on MS SQL server(local)
+-- enteties were auto populated with Redgate tool (14 days trial)
+-- script for SQL Fiddle was auto generated from MS SQL(database->task->generate script->object..) and inserted into SQL Fiddle
+--on real project best practice is to add If exist table before creating new one
+--number of records in the tables are limited by SQL Fiddle
+
+--2)Task2:
+--a)
+--avg days since registration date  untill first deposit(last 90 days, by country,order by number of UID desc):
+
+
+SELECT
+a.Country,
+AVG(DATEDIFF(day,a.registration_date,a.first_deposit_date)) days_registration_to_deposit,
+COUNT(DISTINCT UID) users
+FROM 
+		(SELECT 
+				u.uid,
+				u.country,
+				u.registration_date,
+				MIN (o.operation_date) first_deposit_date 
+		FROM [dbo].[tb_users]u 
+		INNER JOIN [dbo].[tb_logins]l ON u.uid=l.user_uid --AND lower(l.account_type)=lower('real')?
+		INNER JOIN [dbo].[tb_operations] o  ON o.login=l.login  AND LOWER(o.operation_type)=LOWER('deposit')
+		WHERE  u.registration_date>= CAST(DATEADD(day,-90,GETDATE()) AS DATE)
+		GROUP BY u.uid,
+				u.country,
+				u.registration_date)a
+GROUP BY a.Country
+ORDER BY COUNT(DISTINCT a.uid)  DESC;
+
+--days from first deposit to first order for each user
+
+
+SELECT
+a.Country,
+ISNULL(CAST(AVG(DATEDIFF(day,a.first_deposit_date,a.first_order_date)) AS VARCHAR(40)),'no orders')days_registration_to_deposit,
+COUNT(DISTINCT UID) users
+FROM 
+		(SELECT 
+				u.uid,
+				u.country,
+				u.registration_date,
+				MIN (o.operation_date) first_deposit_date ,
+				MIN(d.order_close_date) first_order_date
+		FROM [dbo].[tb_users]u 
+		INNER JOIN [dbo].[tb_logins]l ON u.uid=l.user_uid --AND lower(l.account_type)=lower('real')?
+		INNER JOIN [dbo].[tb_operations] o  ON o.login=l.login  AND LOWER(o.operation_type)=LOWER('deposit')
+		LEFT JOIN [dbo].[tb_orders] d ON D.login=l.login
+		WHERE  u.registration_date>= CAST(DATEADD(day,-90,GETDATE()) AS DATE)
+		GROUP BY u.uid,
+				u.country,
+				u.registration_date)a
+GROUP BY a.Country
+ORDER BY COUNT(DISTINCT a.uid)  DESC;
+
+--b)#UID by country where avg deposit>1000USD
+
+SELECT
+a.Country,
+COUNT(DISTINCT UID) users
+FROM 
+		(SELECT 
+				u.uid,
+				u.country,
+				AVG (o.amount) avg_deposit 
+		FROM [dbo].[tb_users]u 
+		INNER JOIN [dbo].[tb_logins]l ON u.uid=l.user_uid --AND lower(l.account_type)=lower('real')?
+		INNER JOIN [dbo].[tb_operations] o  ON o.login=l.login  AND LOWER(o.operation_type)=LOWER('deposit')
+		GROUP BY u.uid,
+				u.country)a
+GROUP BY a.Country
+ORDER BY COUNT(DISTINCT a.uid)  DESC;
+
+--v)first 3 deposits for each client
+SELECT
+uid,
+login,
+operation_date,
+deposits_order
+
+FROM 
+		(SELECT u.uid,
+				l.login,
+				o.operation_date,
+				ROW_NUMBER() OVER (PARTITION BY u.uid ORDER BY operation_date) deposits_order
+		FROM [dbo].[tb_users]u 
+		INNER JOIN [dbo].[tb_logins]l ON u.uid=l.user_uid --AND lower(l.account_type)=lower('real')?
+		INNER JOIN [dbo].[tb_operations] o  ON o.login=l.login  AND LOWER(o.operation_type)=LOWER('deposit')
+		)a
+WHERE deposits_order<=3;
+
+--g)Min amount, Max amount  transaction  per client for each month:
+		SELECT u.uid,
+		        MONTH(o.operation_date)  operation_month ,
+				MAX(amount) max_amount,
+				MIN(amount) min_amount			
+
+				
+		FROM [dbo].[tb_users]u 
+		INNER JOIN [dbo].[tb_logins]l ON u.uid=l.user_uid --AND lower(l.account_type)=lower('real')?
+		INNER JOIN [dbo].[tb_operations] o  ON o.login=l.login  
+		GROUP BY
+				 u.uid,
+		         MONTH(o.operation_date);
+
+
+

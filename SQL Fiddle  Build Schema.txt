@@ -1,0 +1,149 @@
+/****** Object:  Table [dbo].[tb_logins]    Script Date: 2/22/2022 8:17:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tb_logins](
+	[user_uid] [int] NOT NULL,
+	[login] [nvarchar](50) NOT NULL,
+	[account_type] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[login] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tb_users]    Script Date: 2/22/2022 8:17:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tb_users](
+	[uid] [int] NOT NULL,
+	[registration_date] [date] NOT NULL,
+	[country] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[uid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (3, N'a@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (2, N'e@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (3, N'f@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (2, N'g@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (6, N'i@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (7, N'k@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (4, N'l@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (7, N'm@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (5, N'o@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (4, N'q@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (5, N'r@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (1, N'u@gmail.com', N'real')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (6, N'x@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_logins] ([user_uid], [login], [account_type]) VALUES (1, N'y@gmail.com', N'demo')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (1, CAST(N'2021-11-20' AS Date), N'Qatar')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (2, CAST(N'2021-12-23' AS Date), N'Switzerland')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (3, CAST(N'2021-11-22' AS Date), N'Uganda')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (4, CAST(N'2021-12-02' AS Date), N'Malvinas')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (5, CAST(N'2022-01-30' AS Date), N'Italy')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (6, CAST(N'2021-11-28' AS Date), N'Colombia')
+GO
+INSERT [dbo].[tb_users] ([uid], [registration_date], [country]) VALUES (7, CAST(N'2021-11-16' AS Date), N'Mozambique')
+GO
+
+
+/****** Object:  Table [dbo].[tb_operations]    Script Date: 2/22/2022 10:37:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tb_operations](
+	[operation_id] [int] NOT NULL,
+	[operation_type] [nvarchar](50) NOT NULL,
+	[operation_date] [date] NOT NULL,
+	[login] [nvarchar](50) NOT NULL,
+	[amount] [money] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[operation_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (103, N'withdrawal', CAST(N'2022-01-30' AS Date), N'f@gmail.com', 80.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (106, N'deposit', CAST(N'2022-01-13' AS Date), N'g@gmail.com', 110.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (107, N'withdrawal', CAST(N'2021-12-11' AS Date), N'y@gmail.com', 300.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (113, N'withdrawal', CAST(N'2021-12-17' AS Date), N'a@gmail.com', 600.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (122, N'deposit', CAST(N'2021-12-01' AS Date), N'm@gmail.com', 100.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (125, N'deposit', CAST(N'2022-01-14' AS Date), N'l@gmail.com', 120.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (129, N'withdrawal', CAST(N'2022-01-03' AS Date), N'm@gmail.com', 30.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (131, N'withdrawal', CAST(N'2022-01-30' AS Date), N'g@gmail.com', 40.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (135, N'withdrawal', CAST(N'2022-01-18' AS Date), N'x@gmail.com', 135.0000)
+GO
+INSERT [dbo].[tb_operations] ([operation_id], [operation_type], [operation_date], [login], [amount]) VALUES (137, N'deposit', CAST(N'2022-01-08' AS Date), N'l@gmail.com', 150.0000)
+GO
+
+
+
+/****** Object:  Table [dbo].[tb_orders]    Script Date: 2/22/2022 9:51:46 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tb_orders](
+	[order_id] [int] NOT NULL,
+	[login] [nvarchar](50) NOT NULL,
+	[order_close_date] [date] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[order_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (300, N'g@gmail.com', CAST(N'2022-01-20' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (302, N'm@gmail.com', CAST(N'2022-01-15' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (303, N'u@gmail.com', CAST(N'2022-01-30' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (307, N'y@gmail.com', CAST(N'2021-12-11' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (310, N'a@gmail.com', CAST(N'2022-01-10' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (324, N'u@gmail.com', CAST(N'2022-01-22' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (325, N'e@gmail.com', CAST(N'2022-01-14' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (326, N'u@gmail.com', CAST(N'2021-12-31' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (329, N'x@gmail.com', CAST(N'2022-01-03' AS Date))
+GO
+INSERT [dbo].[tb_orders] ([order_id], [login], [order_close_date]) VALUES (335, N'u@gmail.com', CAST(N'2022-01-18' AS Date))
+GO
